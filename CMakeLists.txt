@@ -1,0 +1,34 @@
+cmake_minimum_required(VERSION 3.28)
+
+set(LIBYAML_BUILD_TESTING OFF)
+add_subdirectory(external/libyaml)
+
+project(embed_dsf VERSION 0.1.0 LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+add_library(${PROJECT_NAME} STATIC)
+
+target_sources(${PROJECT_NAME}
+    PRIVATE
+        src/json_translator.cpp
+        src/yaml_translator.cpp
+)
+
+target_include_directories(${PROJECT_NAME}
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+target_link_libraries(${PROJECT_NAME}
+    PUBLIC
+        yaml
+)
+
+option(EMBEDDSF_BUILD_EXAMPLES "Build EmbedDSF example executables" OFF)
+
+if(EMBEDDSF_BUILD_EXAMPLES)
+    add_subdirectory(examples)
+endif()
