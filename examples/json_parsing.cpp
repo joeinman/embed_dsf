@@ -31,8 +31,7 @@ int main()
 }
 )JSON";
 
-    jsi::embed_dsf::JSONTranslator parser;
-    auto                 document = parser.parse(json);
+    auto document = jsi::embed_dsf::JSONTranslator::parse(json);
     if (!document)
     {
         std::cerr << "Failed to parse JSON: " << document.error() << '\n';
@@ -61,7 +60,7 @@ int main()
         return value.value();
     };
 
-    const auto*           address    = person->find("address");
+    const auto*                 address    = person->find("address");
     const jsi::embed_dsf::Node* streetNode = address ? address->find("street") : nullptr;
     const jsi::embed_dsf::Node* cityNode   = address ? address->find("city") : nullptr;
     const jsi::embed_dsf::Node* zipNode    = address ? address->find("zip") : nullptr;

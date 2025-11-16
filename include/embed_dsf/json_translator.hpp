@@ -23,8 +23,8 @@ namespace jsi::embed_dsf
 class JSONTranslator
 {
 public:
-    [[nodiscard]] std::expected<Node, EmbedDSFError>        parse(const std::string& input) const;
-    [[nodiscard]] std::expected<std::string, EmbedDSFError> emit(const Node& node) const;
+    [[nodiscard]] static std::expected<Node, EmbedDSFError>        parse(const std::string& input);
+    [[nodiscard]] static std::expected<std::string, EmbedDSFError> emit(const Node& node);
 
 private:
     [[nodiscard]] static std::expected<Node, EmbedDSFError> parse_value(const std::string& input, std::size_t& pos);

@@ -15,8 +15,6 @@
 
 int main()
 {
-    jsi::embed_dsf::YAMLTranslator emitter;
-
     jsi::embed_dsf::Node node(jsi::embed_dsf::NodeType::Map);
     node["person"] = jsi::embed_dsf::Node(jsi::embed_dsf::NodeType::Sequence);
     node["person"].emplace_back("Name 1");
@@ -24,7 +22,7 @@ int main()
     node["other"]        = jsi::embed_dsf::Node(jsi::embed_dsf::NodeType::Map);
     node["other"]["key"] = 42;
 
-    auto result = emitter.emit(node);
+    auto result = jsi::embed_dsf::YAMLTranslator::emit(node);
     if (!result)
     {
         std::cerr << "Error emitting YAML: " << result.error() << std::endl;

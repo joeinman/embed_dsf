@@ -262,8 +262,7 @@ bool is_number_literal(std::string_view value)
 
 }  // namespace
 
-std::expected<Node, EmbedDSFError> JSONTranslator::parse(
-    const std::string& input) const  // NOLINT(readability-convert-member-functions-to-static)
+std::expected<Node, EmbedDSFError> JSONTranslator::parse(const std::string& input)
 {
     std::size_t pos = 0;
     skip_whitespace(input, pos);
@@ -282,8 +281,7 @@ std::expected<Node, EmbedDSFError> JSONTranslator::parse(
     return document;
 }
 
-std::expected<std::string, EmbedDSFError> JSONTranslator::emit(
-    const Node& node) const  // NOLINT(readability-convert-member-functions-to-static)
+std::expected<std::string, EmbedDSFError> JSONTranslator::emit(const Node& node)
 {
     return emit_node(node, 0);
 }

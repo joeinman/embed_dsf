@@ -30,7 +30,7 @@ namespace
 namespace jsi::embed_dsf
 {
 
-std::expected<Node, EmbedDSFError> YAMLTranslator::parse(const std::string& input) const noexcept
+std::expected<Node, EmbedDSFError> YAMLTranslator::parse(const std::string& input) noexcept
 {
     yaml_parser_t parser;
     if (yaml_parser_initialize(&parser) == 0)
@@ -106,12 +106,12 @@ std::expected<Node, EmbedDSFError> YAMLTranslator::parse(const std::string& inpu
     return root;
 }
 
-std::expected<std::string, EmbedDSFError> YAMLTranslator::emit(const Node& node) const
+std::expected<std::string, EmbedDSFError> YAMLTranslator::emit(const Node& node)
 {
     return emit_node(node, 0);
 }
 
-bool YAMLTranslator::parse_node(yaml_parser_t& parser, Node& node) const noexcept  // NOLINT(misc-no-recursion)
+bool YAMLTranslator::parse_node(yaml_parser_t& parser, Node& node) noexcept  // NOLINT(misc-no-recursion)
 {
     yaml_event_t event;
     if (yaml_parser_parse(&parser, &event) == 0)
@@ -123,16 +123,16 @@ bool YAMLTranslator::parse_node(yaml_parser_t& parser, Node& node) const noexcep
 
 bool YAMLTranslator::parse_node_from_event(yaml_parser_t& parser,
                                            yaml_event_t&  event,
-                                           Node&          node) const noexcept  // NOLINT(misc-no-recursion)
+                                           Node&          node) noexcept  // NOLINT(misc-no-recursion)
 {
     switch (event.type)
     {
     case YAML_SCALAR_EVENT:
         return parse_scalar_event(event, node);
     case YAML_SEQUENCE_START_EVENT:
-        return parse_sequence_event(parser, event, node, this);
+        return parse_sequence_event(parser, event, node);
     case YAML_MAPPING_START_EVENT:
-        return parse_mapping_event(parser, event, node, this);
+        return parse_mapping_event(parser, event, node);
     default:
         yaml_event_delete(&event);
         return false;
@@ -148,10 +148,9 @@ bool YAMLTranslator::parse_scalar_event(yaml_event_t& event, Node& node) noexcep
     return true;
 }
 
-bool YAMLTranslator::parse_sequence_event(yaml_parser_t&        parser,
-                                          yaml_event_t&         event,
-                                          Node&                 node,
-                                          const YAMLTranslator* self) noexcept  // NOLINT(misc-no-recursion)
+bool YAMLTranslator::parse_sequence_event(yaml_parser_t& parser,
+                                          yaml_event_t&  event,
+                                          Node&          node) noexcept  // NOLINT(misc-no-recursion)
 {
     node = Node(NodeType::Sequence);
     yaml_event_delete(&event);
@@ -168,7 +167,7 @@ bool YAMLTranslator::parse_sequence_event(yaml_parser_t&        parser,
             break;
         }
         Node child(NodeType::Null);
-        if (!self->parse_node_from_event(parser, childEvent, child))
+        if (!parse_node_from_event(parser, childEvent, child))
         {
             return false;
         }
@@ -177,10 +176,9 @@ bool YAMLTranslator::parse_sequence_event(yaml_parser_t&        parser,
     return true;
 }
 
-bool YAMLTranslator::parse_mapping_event(yaml_parser_t&        parser,
-                                         yaml_event_t&         event,
-                                         Node&                 node,
-                                         const YAMLTranslator* self) noexcept  // NOLINT(misc-no-recursion)
+bool YAMLTranslator::parse_mapping_event(yaml_parser_t& parser,
+                                         yaml_event_t&  event,
+                                         Node&          node) noexcept  // NOLINT(misc-no-recursion)
 {
     node = Node(NodeType::Map);
     yaml_event_delete(&event);
@@ -197,7 +195,7 @@ bool YAMLTranslator::parse_mapping_event(yaml_parser_t&        parser,
             break;
         }
         Node keyNode(NodeType::Scalar);
-        if (!self->parse_node_from_event(parser, keyEvent, keyNode))
+        if (!parse_node_from_event(parser, keyEvent, keyNode))
         {
             return false;
         }
@@ -207,7 +205,7 @@ bool YAMLTranslator::parse_mapping_event(yaml_parser_t&        parser,
         }
         const std::string key = keyNode.as_string();
         Node              valueNode(NodeType::Null);
-        if (!self->parse_node(parser, valueNode))
+        if (!parse_node(parser, valueNode))
         {
             return false;
         }
@@ -216,17 +214,18 @@ bool YAMLTranslator::parse_mapping_event(yaml_parser_t&        parser,
     return true;
 }
 
-std::expected<std::string, EmbedDSFError> YAMLTranslator::emit_node(const Node& node, std::int32_t indentLevel)
-    const  // NOLINT(misc-no-recursion)
+std::expected<std::string, EmbedDSFError> YAMLTranslator::emit_node(
+    const Node&  node,
+    std::int32_t indentLevel)  // NOLINT(misc-no-recursion)
 {
     switch (node.get_type())
     {
     case NodeType::Scalar:
         return emit_scalar(node);
     case NodeType::Sequence:
-        return emit_sequence(node, indentLevel, this);
+        return emit_sequence(node, indentLevel);
     case NodeType::Map:
-        return emit_mapping(node, indentLevel, this);
+        return emit_mapping(node, indentLevel);
     case NodeType::Null:
     default:
         return std::unexpected(EmbedDSFError{EmbedDSFErrorType::EmissionError, "Invalid node type for emission"});
@@ -243,9 +242,8 @@ std::expected<std::string, EmbedDSFError> YAMLTranslator::emit_scalar(const Node
 }
 
 std::expected<std::string, EmbedDSFError> YAMLTranslator::emit_sequence(
-    const Node&           node,
-    std::int32_t          indentLevel,
-    const YAMLTranslator* self)  // NOLINT(misc-no-recursion)
+    const Node&  node,
+    std::int32_t indentLevel)  // NOLINT(misc-no-recursion)
 {
     if (!node.is_sequence())
     {
@@ -257,8 +255,7 @@ std::expected<std::string, EmbedDSFError> YAMLTranslator::emit_sequence(
     const auto&       seq    = node.as_sequence();
     for (const auto& elementPtr : seq)
     {
-        auto res =
-            elementPtr->is_scalar() ? self->emit_node(*elementPtr, 0) : self->emit_node(*elementPtr, indentLevel + 1);
+        auto res = elementPtr->is_scalar() ? emit_node(*elementPtr, 0) : emit_node(*elementPtr, indentLevel + 1);
         if (!res)
         {
             return std::unexpected(EmbedDSFError{EmbedDSFErrorType::EmissionError, "Failed to emit sequence element"});
@@ -276,9 +273,8 @@ std::expected<std::string, EmbedDSFError> YAMLTranslator::emit_sequence(
 }
 
 std::expected<std::string, EmbedDSFError> YAMLTranslator::emit_mapping(
-    const Node&           node,
-    std::int32_t          indentLevel,
-    const YAMLTranslator* self)  // NOLINT(misc-no-recursion)
+    const Node&  node,
+    std::int32_t indentLevel)  // NOLINT(misc-no-recursion)
 {
     if (!node.is_map())
     {
@@ -290,8 +286,7 @@ std::expected<std::string, EmbedDSFError> YAMLTranslator::emit_mapping(
     const auto&       map    = node.as_map();
     for (const auto& entry : map)
     {
-        auto res = entry.value_->is_scalar() ? self->emit_node(*entry.value_, 0)
-                                             : self->emit_node(*entry.value_, indentLevel + 1);
+        auto res = entry.value_->is_scalar() ? emit_node(*entry.value_, 0) : emit_node(*entry.value_, indentLevel + 1);
         if (!res)
         {
             return std::unexpected(EmbedDSFError{EmbedDSFErrorType::EmissionError, "Failed to emit mapping element"});

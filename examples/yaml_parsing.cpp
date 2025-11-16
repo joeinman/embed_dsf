@@ -25,8 +25,7 @@ int main()
                              "    city: Springfield\n"
                              "    zip: 12345\n";
 
-    jsi::embed_dsf::YAMLTranslator parser;
-    auto                 document = parser.parse(yamlString);
+    auto document = jsi::embed_dsf::YAMLTranslator::parse(yamlString);
     if (!document)
     {
         std::cerr << "Error parsing YAML: " << document.error() << std::endl;

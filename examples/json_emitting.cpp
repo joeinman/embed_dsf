@@ -15,8 +15,6 @@
 
 int main()
 {
-    jsi::embed_dsf::JSONTranslator serializer;
-
     jsi::embed_dsf::Node root(jsi::embed_dsf::NodeType::Map);
 
     auto& people = root["person"];
@@ -26,7 +24,7 @@ int main()
     auto& other  = root["other"];
     other["key"] = 42;
 
-    auto emitted = serializer.emit(root);
+    auto emitted = jsi::embed_dsf::JSONTranslator::emit(root);
     if (!emitted)
     {
         std::cerr << "Failed to emit JSON: " << emitted.error() << '\n';
