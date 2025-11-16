@@ -31,7 +31,7 @@ int main()
 }
 )JSON";
 
-    EmbedDSF::JSONTranslator parser;
+    jsi::embed_dsf::JSONTranslator parser;
     auto                 document = parser.parse(json);
     if (!document)
     {
@@ -39,15 +39,15 @@ int main()
         return 1;
     }
 
-    const EmbedDSF::Node& root   = document.value();
-    const EmbedDSF::Node* person = root.find("person");
+    const jsi::embed_dsf::Node& root   = document.value();
+    const jsi::embed_dsf::Node* person = root.find("person");
     if (!person || !person->is_map())
     {
         std::cerr << "Missing 'person' object" << '\n';
         return 1;
     }
 
-    auto readScalar = []<typename T>(const EmbedDSF::Node* node, T defaultValue) {
+    auto readScalar = []<typename T>(const jsi::embed_dsf::Node* node, T defaultValue) {
         using ValueType = std::decay_t<T>;
         if (!node)
         {
@@ -62,9 +62,9 @@ int main()
     };
 
     const auto*           address    = person->find("address");
-    const EmbedDSF::Node* streetNode = address ? address->find("street") : nullptr;
-    const EmbedDSF::Node* cityNode   = address ? address->find("city") : nullptr;
-    const EmbedDSF::Node* zipNode    = address ? address->find("zip") : nullptr;
+    const jsi::embed_dsf::Node* streetNode = address ? address->find("street") : nullptr;
+    const jsi::embed_dsf::Node* cityNode   = address ? address->find("city") : nullptr;
+    const jsi::embed_dsf::Node* zipNode    = address ? address->find("zip") : nullptr;
 
     const auto name   = readScalar(person->find("name"), std::string{"unknown"});
     const auto age    = readScalar(person->find("age"), 0);

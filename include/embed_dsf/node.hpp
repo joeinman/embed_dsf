@@ -30,7 +30,7 @@
 
 #include "embed_dsf/error.hpp"
 
-namespace EmbedDSF
+namespace jsi::embed_dsf
 {
 
 class Node;
@@ -258,9 +258,9 @@ private:
     NodeVariant value_{};
 };
 
-}  // namespace EmbedDSF
+}  // namespace jsi::embed_dsf
 
-namespace EmbedDSF
+namespace jsi::embed_dsf
 {
 
 inline MapEntry::MapEntry(std::string k, std::unique_ptr<Node> v) noexcept : key_(std::move(k)), value_(std::move(v)) {}
@@ -451,4 +451,4 @@ inline std::size_t Node::size() const noexcept
     }
 }
 
-}  // namespace EmbedDSF
+}  // namespace jsi::embed_dsf

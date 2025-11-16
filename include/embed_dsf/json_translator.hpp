@@ -17,7 +17,7 @@
 #include "embed_dsf/error.hpp"
 #include "embed_dsf/node.hpp"
 
-namespace EmbedDSF
+namespace jsi::embed_dsf
 {
 
 class JSONTranslator
@@ -49,4 +49,4 @@ private:
     [[nodiscard]] static std::string                               indent_string(std::int32_t indentLevel);
 };
 
-}  // namespace EmbedDSF
+}  // namespace jsi::embed_dsf

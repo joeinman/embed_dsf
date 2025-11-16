@@ -15,13 +15,13 @@
 
 int main()
 {
-    EmbedDSF::YAMLTranslator emitter;
+    jsi::embed_dsf::YAMLTranslator emitter;
 
-    EmbedDSF::Node node(EmbedDSF::NodeType::Map);
-    node["person"] = EmbedDSF::Node(EmbedDSF::NodeType::Sequence);
+    jsi::embed_dsf::Node node(jsi::embed_dsf::NodeType::Map);
+    node["person"] = jsi::embed_dsf::Node(jsi::embed_dsf::NodeType::Sequence);
     node["person"].emplace_back("Name 1");
     node["person"].emplace_back("Name 2");
-    node["other"]        = EmbedDSF::Node(EmbedDSF::NodeType::Map);
+    node["other"]        = jsi::embed_dsf::Node(jsi::embed_dsf::NodeType::Map);
     node["other"]["key"] = 42;
 
     auto result = emitter.emit(node);

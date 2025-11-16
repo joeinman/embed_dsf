@@ -16,7 +16,7 @@
 #include <string_view>
 #include <utility>
 
-namespace EmbedDSF
+namespace jsi::embed_dsf
 {
 namespace
 {
@@ -774,4 +774,4 @@ std::string JSONTranslator::indent_string(std::int32_t indentLevel)
     return std::string(static_cast<std::size_t>(indentLevel) * 2, ' ');  // NOLINT(modernize-return-braced-init-list)
 }
 
-}  // namespace EmbedDSF
+}  // namespace jsi::embed_dsf

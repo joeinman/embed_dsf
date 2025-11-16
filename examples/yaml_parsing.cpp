@@ -25,7 +25,7 @@ int main()
                              "    city: Springfield\n"
                              "    zip: 12345\n";
 
-    EmbedDSF::YAMLTranslator parser;
+    jsi::embed_dsf::YAMLTranslator parser;
     auto                 document = parser.parse(yamlString);
     if (!document)
     {
@@ -41,7 +41,7 @@ int main()
         return 1;
     }
 
-    const auto readScalar = []<typename T>(const EmbedDSF::Node* node, T defaultValue) {
+    const auto readScalar = []<typename T>(const jsi::embed_dsf::Node* node, T defaultValue) {
         using ValueType = std::decay_t<T>;
         if (!node)
         {

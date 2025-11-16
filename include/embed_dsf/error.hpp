@@ -16,7 +16,7 @@
 #include <string_view>
 #include <cstdint>
 
-namespace EmbedDSF
+namespace jsi::embed_dsf
 {
 
 enum class EmbedDSFErrorType : std::uint8_t
@@ -62,4 +62,4 @@ inline std::ostream& operator<<(std::ostream& os, const EmbedDSFError& err)
     return os;
 }
 
-}  // namespace EmbedDSF
+}  // namespace jsi::embed_dsf

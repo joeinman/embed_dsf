@@ -15,9 +15,9 @@
 
 int main()
 {
-    EmbedDSF::JSONTranslator serializer;
+    jsi::embed_dsf::JSONTranslator serializer;
 
-    EmbedDSF::Node root(EmbedDSF::NodeType::Map);
+    jsi::embed_dsf::Node root(jsi::embed_dsf::NodeType::Map);
 
     auto& people = root["person"];
     people.emplace_back(std::string{"Name 1"});

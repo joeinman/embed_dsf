@@ -27,7 +27,7 @@ namespace
 }
 }  // namespace
 
-namespace EmbedDSF
+namespace jsi::embed_dsf
 {
 
 std::expected<Node, EmbedDSFError> YAMLTranslator::parse(const std::string& input) const noexcept
@@ -307,4 +307,4 @@ std::expected<std::string, EmbedDSFError> YAMLTranslator::emit_mapping(const Nod
     return output;
 }
 
-}  // namespace EmbedDSF
+}  // namespace jsi::embed_dsf

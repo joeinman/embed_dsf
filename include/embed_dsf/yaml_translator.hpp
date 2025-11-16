@@ -21,7 +21,7 @@ extern "C" {
 #include <yaml.h>
 }
 
-namespace EmbedDSF
+namespace jsi::embed_dsf
 {
 
 class YAMLTranslator
@@ -58,4 +58,4 @@ private:
     }
 };
 
-}  // namespace EmbedDSF
+}  // namespace jsi::embed_dsf
