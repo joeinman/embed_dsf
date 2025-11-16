@@ -122,8 +122,8 @@ bool YAMLTranslator::parse_node(yaml_parser_t& parser, Node& node) const noexcep
 }
 
 bool YAMLTranslator::parse_node_from_event(yaml_parser_t& parser,
-                                       yaml_event_t&  event,
-                                       Node&          node) const noexcept  // NOLINT(misc-no-recursion)
+                                           yaml_event_t&  event,
+                                           Node&          node) const noexcept  // NOLINT(misc-no-recursion)
 {
     switch (event.type)
     {
@@ -148,10 +148,10 @@ bool YAMLTranslator::parse_scalar_event(yaml_event_t& event, Node& node) noexcep
     return true;
 }
 
-bool YAMLTranslator::parse_sequence_event(yaml_parser_t&    parser,
-                                      yaml_event_t&     event,
-                                      Node&             node,
-                                      const YAMLTranslator* self) noexcept  // NOLINT(misc-no-recursion)
+bool YAMLTranslator::parse_sequence_event(yaml_parser_t&        parser,
+                                          yaml_event_t&         event,
+                                          Node&                 node,
+                                          const YAMLTranslator* self) noexcept  // NOLINT(misc-no-recursion)
 {
     node = Node(NodeType::Sequence);
     yaml_event_delete(&event);
@@ -177,10 +177,10 @@ bool YAMLTranslator::parse_sequence_event(yaml_parser_t&    parser,
     return true;
 }
 
-bool YAMLTranslator::parse_mapping_event(yaml_parser_t&    parser,
-                                     yaml_event_t&     event,
-                                     Node&             node,
-                                     const YAMLTranslator* self) noexcept  // NOLINT(misc-no-recursion)
+bool YAMLTranslator::parse_mapping_event(yaml_parser_t&        parser,
+                                         yaml_event_t&         event,
+                                         Node&                 node,
+                                         const YAMLTranslator* self) noexcept  // NOLINT(misc-no-recursion)
 {
     node = Node(NodeType::Map);
     yaml_event_delete(&event);
@@ -243,8 +243,8 @@ std::expected<std::string, EmbedDSFError> YAMLTranslator::emit_scalar(const Node
 }
 
 std::expected<std::string, EmbedDSFError> YAMLTranslator::emit_sequence(
-    const Node&       node,
-    std::int32_t      indentLevel,
+    const Node&           node,
+    std::int32_t          indentLevel,
     const YAMLTranslator* self)  // NOLINT(misc-no-recursion)
 {
     if (!node.is_sequence())
@@ -275,9 +275,10 @@ std::expected<std::string, EmbedDSFError> YAMLTranslator::emit_sequence(
     return output;
 }
 
-std::expected<std::string, EmbedDSFError> YAMLTranslator::emit_mapping(const Node&       node,
-                                                                   std::int32_t      indentLevel,
-                                                                   const YAMLTranslator* self)  // NOLINT(misc-no-recursion)
+std::expected<std::string, EmbedDSFError> YAMLTranslator::emit_mapping(
+    const Node&           node,
+    std::int32_t          indentLevel,
+    const YAMLTranslator* self)  // NOLINT(misc-no-recursion)
 {
     if (!node.is_map())
     {
