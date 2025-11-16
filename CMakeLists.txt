@@ -26,7 +26,7 @@ target_link_libraries(${PROJECT_NAME}
         yaml
 )
 
-option(EMBEDDSF_BUILD_EXAMPLES "Build EmbedDSF example executables" ON)
+option(EMBEDDSF_BUILD_EXAMPLES "Build EmbedDSF example executables" OFF)
 
 if(EMBEDDSF_BUILD_EXAMPLES)
     add_subdirectory(examples)
