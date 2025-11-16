@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.28)
 
+set(LIBYAML_BUILD_TESTING OFF)
 add_subdirectory(external/libyaml)
 
 project(embed_dsf VERSION 0.1.0 LANGUAGES CXX)
