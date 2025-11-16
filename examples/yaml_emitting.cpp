@@ -8,14 +8,14 @@
  * This file is part of the EmbedDSF project.
  */
 
-#include <embed_dsf/yaml_parser.hpp>
+#include <embed_dsf/yaml_translator.hpp>
 
 #include <iostream>
 #include <string>
 
 int main()
 {
-    EmbedDSF::YAMLParser emitter;
+    EmbedDSF::YAMLTranslator emitter;
 
     EmbedDSF::Node node(EmbedDSF::NodeType::Map);
     node["person"] = EmbedDSF::Node(EmbedDSF::NodeType::Sequence);

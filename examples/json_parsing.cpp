@@ -8,7 +8,7 @@
  * This file is part of the EmbedDSF project.
  */
 
-#include <embed_dsf/json_parser.hpp>
+#include <embed_dsf/json_translator.hpp>
 
 #include <iostream>
 #include <string>
@@ -31,7 +31,7 @@ int main()
 }
 )JSON";
 
-    EmbedDSF::JSONParser parser;
+    EmbedDSF::JSONTranslator parser;
     auto                 document = parser.parse(json);
     if (!document)
     {

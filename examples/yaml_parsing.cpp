@@ -8,7 +8,7 @@
  * This file is part of the EmbedDSF project.
  */
 
-#include <embed_dsf/yaml_parser.hpp>
+#include <embed_dsf/yaml_translator.hpp>
 
 #include <iostream>
 #include <string>
@@ -25,7 +25,7 @@ int main()
                              "    city: Springfield\n"
                              "    zip: 12345\n";
 
-    EmbedDSF::YAMLParser parser;
+    EmbedDSF::YAMLTranslator parser;
     auto                 document = parser.parse(yamlString);
     if (!document)
     {

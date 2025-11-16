@@ -8,7 +8,7 @@
  * This file is part of the EmbedDSF project.
  */
 
-#include "embed_dsf/json_parser.hpp"
+#include "embed_dsf/json_translator.hpp"
 
 #include <cctype>
 #include <cmath>
@@ -262,7 +262,7 @@ bool is_number_literal(std::string_view value)
 
 }  // namespace
 
-std::expected<Node, EmbedDSFError> JSONParser::parse(
+std::expected<Node, EmbedDSFError> JSONTranslator::parse(
     const std::string& input) const  // NOLINT(readability-convert-member-functions-to-static)
 {
     std::size_t pos = 0;
@@ -282,13 +282,13 @@ std::expected<Node, EmbedDSFError> JSONParser::parse(
     return document;
 }
 
-std::expected<std::string, EmbedDSFError> JSONParser::emit(
+std::expected<std::string, EmbedDSFError> JSONTranslator::emit(
     const Node& node) const  // NOLINT(readability-convert-member-functions-to-static)
 {
     return emit_node(node, 0);
 }
 
-std::expected<Node, EmbedDSFError> JSONParser::parse_value(const std::string& input,
+std::expected<Node, EmbedDSFError> JSONTranslator::parse_value(const std::string& input,
                                                            std::size_t&       pos)  // NOLINT(misc-no-recursion)
 {
     skip_whitespace(input, pos);
@@ -337,7 +337,7 @@ std::expected<Node, EmbedDSFError> JSONParser::parse_value(const std::string& in
     return std::unexpected(EmbedDSFError{EmbedDSFErrorType::ParseError, "Invalid value"});
 }
 
-std::expected<Node, EmbedDSFError> JSONParser::parse_object(const std::string& input,
+std::expected<Node, EmbedDSFError> JSONTranslator::parse_object(const std::string& input,
                                                             std::size_t&       pos)  // NOLINT(misc-no-recursion)
 {
     if (input[pos] != '{')
@@ -407,7 +407,7 @@ std::expected<Node, EmbedDSFError> JSONParser::parse_object(const std::string& i
     return node;
 }
 
-std::expected<Node, EmbedDSFError> JSONParser::parse_array(const std::string& input,
+std::expected<Node, EmbedDSFError> JSONTranslator::parse_array(const std::string& input,
                                                            std::size_t&       pos)  // NOLINT(misc-no-recursion)
 {
     if (input[pos] != '[')
@@ -455,7 +455,7 @@ std::expected<Node, EmbedDSFError> JSONParser::parse_array(const std::string& in
     return node;
 }
 
-std::expected<std::string, EmbedDSFError> JSONParser::parse_string(std::string_view input, std::size_t& pos)
+std::expected<std::string, EmbedDSFError> JSONTranslator::parse_string(std::string_view input, std::size_t& pos)
 {
     if (input[pos] != '"')
     {
@@ -492,7 +492,7 @@ std::expected<std::string, EmbedDSFError> JSONParser::parse_string(std::string_v
     return std::unexpected(EmbedDSFError{EmbedDSFErrorType::ParseError, "Unterminated string"});
 }
 
-std::expected<std::string, EmbedDSFError> JSONParser::parse_number(std::string_view input, std::size_t& pos)
+std::expected<std::string, EmbedDSFError> JSONTranslator::parse_number(std::string_view input, std::size_t& pos)
 {
     const std::size_t start = pos;
     if (input[pos] == '-')
@@ -562,7 +562,7 @@ std::expected<std::string, EmbedDSFError> JSONParser::parse_number(std::string_v
     return std::string(input.substr(start, pos - start));
 }
 
-std::expected<Node, EmbedDSFError> JSONParser::parse_boolean(std::string_view input, std::size_t& pos)
+std::expected<Node, EmbedDSFError> JSONTranslator::parse_boolean(std::string_view input, std::size_t& pos)
 {
     if (input.compare(pos, 4, "true") == 0)
     {
@@ -581,7 +581,7 @@ std::expected<Node, EmbedDSFError> JSONParser::parse_boolean(std::string_view in
     return std::unexpected(EmbedDSFError{EmbedDSFErrorType::ParseError, "Invalid boolean"});
 }
 
-std::expected<Node, EmbedDSFError> JSONParser::parse_null(std::string_view input, std::size_t& pos)
+std::expected<Node, EmbedDSFError> JSONTranslator::parse_null(std::string_view input, std::size_t& pos)
 {
     if (input.compare(pos, 4, "null") != 0)
     {
@@ -592,7 +592,7 @@ std::expected<Node, EmbedDSFError> JSONParser::parse_null(std::string_view input
     return node;
 }
 
-void JSONParser::skip_whitespace(const std::string& input, std::size_t& pos) noexcept
+void JSONTranslator::skip_whitespace(const std::string& input, std::size_t& pos) noexcept
 {
     while (pos < input.size() && std::isspace(static_cast<unsigned char>(input[pos])) != 0)
     {
@@ -600,7 +600,7 @@ void JSONParser::skip_whitespace(const std::string& input, std::size_t& pos) noe
     }
 }
 
-std::expected<std::string, EmbedDSFError> JSONParser::emit_node(const Node&  node,
+std::expected<std::string, EmbedDSFError> JSONTranslator::emit_node(const Node&  node,
                                                                 std::int32_t indentLevel)  // NOLINT(misc-no-recursion)
 {
     switch (node.get_type())
@@ -617,7 +617,7 @@ std::expected<std::string, EmbedDSFError> JSONParser::emit_node(const Node&  nod
     return std::unexpected(EmbedDSFError{EmbedDSFErrorType::EmissionError, "Unknown node type"});
 }
 
-std::expected<std::string, EmbedDSFError> JSONParser::emit_scalar(const Node& node)
+std::expected<std::string, EmbedDSFError> JSONTranslator::emit_scalar(const Node& node)
 {
     if (!node.is_scalar())
     {
@@ -636,7 +636,7 @@ std::expected<std::string, EmbedDSFError> JSONParser::emit_scalar(const Node& no
     return output;
 }
 
-std::expected<std::string, EmbedDSFError> JSONParser::emit_sequence(
+std::expected<std::string, EmbedDSFError> JSONTranslator::emit_sequence(
     const Node&  node,
     std::int32_t indentLevel)  // NOLINT(misc-no-recursion)
 {
@@ -674,7 +674,7 @@ std::expected<std::string, EmbedDSFError> JSONParser::emit_sequence(
     return output;
 }
 
-std::expected<std::string, EmbedDSFError> JSONParser::emit_mapping(
+std::expected<std::string, EmbedDSFError> JSONTranslator::emit_mapping(
     const Node&  node,
     std::int32_t indentLevel)  // NOLINT(misc-no-recursion)
 {
@@ -716,7 +716,7 @@ std::expected<std::string, EmbedDSFError> JSONParser::emit_mapping(
     return output;
 }
 
-std::string JSONParser::escape_string(const std::string& str)
+std::string JSONTranslator::escape_string(const std::string& str)
 {
     std::string escaped;
     escaped.reserve(str.size());
@@ -765,7 +765,7 @@ std::string JSONParser::escape_string(const std::string& str)
     return escaped;
 }
 
-std::string JSONParser::indent_string(std::int32_t indentLevel)
+std::string JSONTranslator::indent_string(std::int32_t indentLevel)
 {
     if (indentLevel <= 0)
     {

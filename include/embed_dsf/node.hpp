@@ -240,8 +240,8 @@ public:
     }
 
 private:
-    friend class JSONParser;
-    friend class YAMLParser;
+    friend class JSONTranslator;
+    friend class YAMLTranslator;
 
     void ensure_type(NodeType type) noexcept;
 

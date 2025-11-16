@@ -20,7 +20,7 @@
 namespace EmbedDSF
 {
 
-class JSONParser
+class JSONTranslator
 {
 public:
     [[nodiscard]] std::expected<Node, EmbedDSFError>        parse(const std::string& input) const;

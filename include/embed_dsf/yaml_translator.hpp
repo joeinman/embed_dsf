@@ -24,7 +24,7 @@ extern "C" {
 namespace EmbedDSF
 {
 
-class YAMLParser
+class YAMLTranslator
 {
 public:
     [[nodiscard]] std::expected<Node, EmbedDSFError>        parse(const std::string& input) const noexcept;
@@ -37,20 +37,20 @@ private:
     static bool parse_sequence_event(yaml_parser_t&    parser,
                                      yaml_event_t&     event,
                                      Node&             node,
-                                     const YAMLParser* self) noexcept;
+                                     const YAMLTranslator* self) noexcept;
     static bool parse_mapping_event(yaml_parser_t&    parser,
                                     yaml_event_t&     event,
                                     Node&             node,
-                                    const YAMLParser* self) noexcept;
+                                    const YAMLTranslator* self) noexcept;
 
     [[nodiscard]] std::expected<std::string, EmbedDSFError> emit_node(const Node& node, std::int32_t indentLevel) const;
     [[nodiscard]] static std::expected<std::string, EmbedDSFError> emit_scalar(const Node& node);
     [[nodiscard]] static std::expected<std::string, EmbedDSFError> emit_sequence(const Node&       node,
                                                                                  std::int32_t      indentLevel,
-                                                                                 const YAMLParser* self);
+                                                                                 const YAMLTranslator* self);
     [[nodiscard]] static std::expected<std::string, EmbedDSFError> emit_mapping(const Node&       node,
                                                                                 std::int32_t      indentLevel,
-                                                                                const YAMLParser* self);
+                                                                                const YAMLTranslator* self);
 
     [[nodiscard]] static std::string indent_string(std::int32_t indentLevel)
     {

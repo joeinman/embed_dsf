@@ -12,8 +12,8 @@ add_library(${PROJECT_NAME} STATIC)
 
 target_sources(${PROJECT_NAME}
     PRIVATE
-        src/json_parser.cpp
-        src/yaml_parser.cpp
+        src/json_translator.cpp
+        src/yaml_translator.cpp
 )
 
 target_include_directories(${PROJECT_NAME}
