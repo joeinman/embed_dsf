@@ -289,7 +289,7 @@ std::expected<std::string, EmbedDSFError> JSONTranslator::emit(
 }
 
 std::expected<Node, EmbedDSFError> JSONTranslator::parse_value(const std::string& input,
-                                                           std::size_t&       pos)  // NOLINT(misc-no-recursion)
+                                                               std::size_t&       pos)  // NOLINT(misc-no-recursion)
 {
     skip_whitespace(input, pos);
     if (pos >= input.size())
@@ -338,7 +338,7 @@ std::expected<Node, EmbedDSFError> JSONTranslator::parse_value(const std::string
 }
 
 std::expected<Node, EmbedDSFError> JSONTranslator::parse_object(const std::string& input,
-                                                            std::size_t&       pos)  // NOLINT(misc-no-recursion)
+                                                                std::size_t&       pos)  // NOLINT(misc-no-recursion)
 {
     if (input[pos] != '{')
     {
@@ -408,7 +408,7 @@ std::expected<Node, EmbedDSFError> JSONTranslator::parse_object(const std::strin
 }
 
 std::expected<Node, EmbedDSFError> JSONTranslator::parse_array(const std::string& input,
-                                                           std::size_t&       pos)  // NOLINT(misc-no-recursion)
+                                                               std::size_t&       pos)  // NOLINT(misc-no-recursion)
 {
     if (input[pos] != '[')
     {
@@ -600,8 +600,9 @@ void JSONTranslator::skip_whitespace(const std::string& input, std::size_t& pos)
     }
 }
 
-std::expected<std::string, EmbedDSFError> JSONTranslator::emit_node(const Node&  node,
-                                                                std::int32_t indentLevel)  // NOLINT(misc-no-recursion)
+std::expected<std::string, EmbedDSFError> JSONTranslator::emit_node(
+    const Node&  node,
+    std::int32_t indentLevel)  // NOLINT(misc-no-recursion)
 {
     switch (node.get_type())
     {
