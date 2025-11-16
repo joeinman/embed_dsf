@@ -1,0 +1,11 @@
+add_executable(embed_dsf_json_parsing_example json_parsing.cpp)
+target_link_libraries(embed_dsf_json_parsing_example PUBLIC embed_dsf)
+
+add_executable(embed_dsf_json_emitting_example json_emitting.cpp)
+target_link_libraries(embed_dsf_json_emitting_example PUBLIC embed_dsf)
+
+add_executable(embed_dsf_yaml_parsing_example yaml_parsing.cpp)
+target_link_libraries(embed_dsf_yaml_parsing_example PUBLIC embed_dsf)
+
+add_executable(embed_dsf_yaml_emitting_example yaml_emitting.cpp)
+target_link_libraries(embed_dsf_yaml_emitting_example PUBLIC embed_dsf)

@@ -1,0 +1,38 @@
+name: Clang-Format Lint
+
+on:
+  push:
+    branches: [ "main", "devel", "feature/*" ]
+  pull_request:
+    branches: [ "main", "devel", "feature/*" ]
+
+jobs:
+  clang-format:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get modified files
+        id: changes
+        run: |
+          MODIFIED_FILES=$(git diff --diff-filter=ACMR --name-only origin/${{ github.base_ref }}...HEAD -- '*.c' '*.cpp' '*.h' '*.hpp' | tr '\n' ' ')
+          echo "MODIFIED_FILES=${MODIFIED_FILES}" >> $GITHUB_OUTPUT
+
+      - name: Debug modified files output
+        run: |
+          echo "Files detected: ${{ steps.changes.outputs.MODIFIED_FILES }}"
+
+      - name: Lint modified files
+        if: ${{ steps.changes.outputs.MODIFIED_FILES != '' }}
+        run: |
+          echo "Linting the following files:"
+          echo "${{ steps.changes.outputs.MODIFIED_FILES }}"
+
+          for file in ${{ steps.changes.outputs.MODIFIED_FILES }}; do
+            echo "Checking format in: $file"
+            clang-format --dry-run --Werror "$file"
+          done
